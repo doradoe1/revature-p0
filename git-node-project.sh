@@ -34,15 +34,15 @@ fi
 
 # git::initial commit.##
 
-dest=$1
+currentdirectory=$1
 
-if [ -z $dest ]; then
-  dest=$(pwd)
+if [ -z $currentdirectory ]; then
+  currentdirectory=$(pwd)
 fi
 
-echo $dest
-mkdir -p $dest/git-project
-cd $dest/git-project
+echo $currentdirectory
+mkdir -p $currentdirectory/git-project
+cd $currentdirectory/git-project
 git init
 
 ## node.##
@@ -88,7 +88,6 @@ touch \
   CHANGELOG.md \
   LICENSE.txt \
   README.md
-fi
 
 echo 'Это сделано'
 exit 0
