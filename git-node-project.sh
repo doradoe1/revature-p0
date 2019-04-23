@@ -1,12 +1,10 @@
 #!/bin/bash
 
+##Automate the process of setting up a new git project repository structure.##
+##Include: verify req-1 is valid, and create web node-based project.##
+
 ##Check for dev environment (requirement one).##
 ##Do not allow it to continue if git or node are missing.##
-
-if [ -z "which brew" ]; then
-echo "Brew missing. Please install brew. Run ./linux-setup.sh" 1>&2
-exit 1
-fi
 
 if [ -z "which git" ]; then
 echo "Git missing. Install git. Run brew install git, then try again." 1>&2
@@ -14,70 +12,84 @@ exit 1
 fi
 
 if [ -z "which node" ]; then
-echo "Node missing. Install and upgrade node. Run brew install node, then try again" 1>&2
+echo "Node missing. Install node. Run brew install node, then try again" 1>&2
 exit 1
 fi
 
-##Assing pwd a variable, otherwise the git repository will recognize pwd##
-##as part of its structure, not the present working directory value.##
-##This will allow is to create the git structure.##
+echo "Environment verification complete."
 
 # git::initial commit.##
 
-currentdirectory=$1
+##Variables needed for script.##
+directory=$1
+username=$2
+email=$3
 
-if [ -z $currentdirectory ]; then
-  currentdirectory=$(pwd)
+##Check if the given directory exists. If it doesn't, create it.##
+if ! [ -d $directory ]; then
+mkdir -p $directory
 fi
 
-echo $currentdirectory
-mkdir -p $currentdirectory/git-project
-cd $currentdirectory/git-project
-git init
+cd $directory
 
-## node.##
-npm init -y
+##Validate the given directory. It must be empty or nonexistent.##
+##Else try another directory.##
+if [ -n "$(ls -A $directory)" ]; then
+echo "Directory is not empty. Please choose another location or empty the directory." 1>&2
+exit 1
+fi
+echo "Requirements verified. Creating git structure."
 
-## Use this structure just like the sacred text foretold.##
-## docker.##
+##Use this structure just like the sacred text foretold.##
+##Docker.##
 mkdir .docker
 
 touch \
-  .docker/dockerfile \
-  .docker/dockerup.yaml
+.docker/dockerfile \
+.docker/dockerup.yaml
 
-## github.##
+##Github.##
 mkdir -p \
-  .github/ISSUE_TEMPLATE \
-  .github/PULL_REQUEST_TEMPLATE
+.github/ISSUE_TEMPLATE \
+.github/PULL_REQUEST_TEMPLATE
 
 touch \
-  .github/ISSUE_TEMPLATE/issue-template.md \
-  .github/PULL_REQUEST_TEMPLATE/pull-request-template.md
-
-touch \
-  .github/CODE-OF-CONDUCT.md \
-  .github/CONTRIBUTING.md
+.github/ISSUE_TEMPLATE/issue-template.md \
+.github/PULL_REQUEST_TEMPLATE/pull-request-template.md \
+.github/CODE-OF-CONDUCT.md \
+.github/CONTRIBUTING.md
 
 mkdir \
-  client \
-  src \
-  test
+client \
+src \
+test
 
 touch \
-  client/.gitkeep \
-  src/.gitkeep \
-  test/.gitkeep
+client/.gitkeep \
+src/.gitkeep \
+test/.gitkeep
 
 touch \
-  .azureup.yaml \
-  .dockerignore \
-  .editorconfig \
-  .gitignore \
-  .markdownlint.yaml \
-  CHANGELOG.md \
-  LICENSE.txt \
-  README.md
+.azureup.yaml \
+.dockerignore \
+.editorconfig \
+.gitignore \
+.markdownlint.yaml \
+CHANGELOG.md \
+LICENSE.txt \
+README.md
 
-echo 'Это сделано'
-exit 0
+echo "Это сделано"
+
+##Initialize the Git repository conversion.##
+
+echo "Initializing the git repository. Provide username and email."
+git init
+git config user.name $name
+git config user.email $email
+
+## Convert to Node project.##
+echo "Creating Node Project"
+npm init -y
+
+echo "Process completed."
