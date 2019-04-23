@@ -1,8 +1,6 @@
 #!/bin/bash
 
-##Declare the variables needed. We will use these variables.##
-##Across the three functions.##
-
+##State the username of the admin upon running the script.##
 username=$1
 
 ##Step One: Login into Azure.##
@@ -11,7 +9,7 @@ az login -u $username
 
 ##Step Two: Must have admin credentials to continue.##
 
-echo "Verifying for Administrator Credentials. Please wait."
+echo "Verifying for Administrator Credentials. Please wait..."
 
 check=$(az role assignment list  --include-classic-administrators \
 --query "[?id=='NA(classic admins)'].principalName" | grep -E $username)
@@ -20,11 +18,11 @@ echo "You must have administrator credentials to use access this functionality" 
 exit 1
 fi
 
-echo "User Validated, please state one of the following functions:" \
-"createuser username *no domain needed* to create a new user." \
-"assingrole create or delete username *no domain needed*" \
-"reader or contributor to assing or remove a role to an existing user." \
-"deleteuser username *no domain needed* to delete a non-admin existing user."
+echo "User Validated, please state one of the following functions:"
+echo "Input createuser username *no domain needed* to create a new user."
+echo "Input assingrole create or delete username *no domain needed*."
+echo "Input reader or contributor to assing or remove a role to an existing user."
+echo "Input deleteuser username *no domain needed* to delete a non-admin existing user."
 
 ##Function One: Create User##
 ##Function will also check to see if the user we are intending to create already exits##
@@ -39,7 +37,7 @@ userprincipalname=$displayname@doradoe1outlook.onmicrosoft.com
 result=$(az ad user list --query [].userprincipalname | grep -E /$userprincipalname/)
 
 if [ -n 'result' ]; then
-echo "User being created. Please wait"
+echo "User being created. Please wait..."
 az ad user create \
 --display-name $displayname \
 --password Revature2019 \
@@ -48,7 +46,7 @@ az ad user create \
 --force-change-password-next-login true
 fi
 
-echo 'Это сделано'
+echo 'User created succesfully.'
 exit 0
 
 }
@@ -76,9 +74,9 @@ elif [ -z $role ]; then
 echo "Invalid role. Please enter reader or contributor." 1>&2
 exit 1
 fi
-
+echo "Assigning/updating role. Please wait..."
 az role assignment $action --assignee $userprincipalname --role $role
-
+echo "Role assigned/updated"
 }
 
 ##Function Three: Delete non-admin users.##
@@ -110,8 +108,9 @@ if [ -z $user ]; then
 echo "Invalid user. Please enter an existing user with non-administrator credentials." 1>&2
 exit 1
 else
-echo "User exists. Deleting User. Please wait."
+echo "User exists. Deleting User. Please wait..."
 az ad user delete --upn-or-object-id $userprincipalname
+echo "User deleted."
 fi
 
 }
