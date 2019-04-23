@@ -1,31 +1,21 @@
 #!/bin/bash
 
-##check for dev environment (requirement one).##
-## Do not allow it to continue if one of them is missing.##
+##Check for dev environment (requirement one).##
+##Do not allow it to continue if git or node are missing.##
 
 if [ -z "which brew" ]; then
-  echo "Brew missing. Install brew. Run ./linux-setup.sh" 1>&2
-  exit 1
+echo "Brew missing. Please install brew. Run ./linux-setup.sh" 1>&2
+exit 1
 fi
 
 if [ -z "which git" ]; then
-  echo "Git missing. Install git. Run ./linux-setup.sh" 1>&2
-  exit 1
-fi
-
-if [ -z "which gcc" ]; then
-  echo "GCC missing. Install gcc. Run ./linux-setup.sh" 1>&2
-  exit 1
+echo "Git missing. Install git. Run brew install git, then try again." 1>&2
+exit 1
 fi
 
 if [ -z "which node" ]; then
-  echo "Node missing. Install and upgrade node. Run ./linux-setup.sh" 1>&2
-  exit 1
-fi
-
-if [ -z "which az" ]; then
-  echo "Azure missing. Install azure. Run ./linux-setup.sh" 1>&2
-  exit 1
+echo "Node missing. Install and upgrade node. Run brew install node, then try again" 1>&2
+exit 1
 fi
 
 ##Assing pwd a variable, otherwise the git repository will recognize pwd##
