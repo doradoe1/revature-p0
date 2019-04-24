@@ -8,10 +8,18 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt-get install -y build-essential curl file git
 
-#Install brew and git##
-echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.profile
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-echo -ne '\n' | sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/m$
+#Install brew, git, and configure the home path##
+echo '' | sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+
+##Dummyproffing the installation of brew##
+if [ -z $(which brew) ]; then
+echo "brew did not install. Please try again"
+exit 1
+fi
 
 ##Install gcc. GNU C compiler. Brew will manage it. The GNU Compiler Collection.##
 ##Compiles C into a script##

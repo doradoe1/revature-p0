@@ -74,15 +74,19 @@ displayname=$2
 userprincipalname=$displayname@doradoe1outlook.onmicrosoft.com
 role=$3
 
-##Checks if the user exists and if the role is already assigned or not.##
+##Checks if the action is valid, user exists, and if the role is already assigned or not.##
 
-if [ -z $userprincipalname ]; then
+if [ -z $action ]; then
+echo "Invalid action. Please enter either create or delete." 1>&2
+exit 1
+elif [ -z $userprincipalname ]; then
 echo "Invalid username. Please provide an existing username." 1>&2
 exit 1
 elif [ -z $role ]; then
 echo "Invalid role. Please enter reader or contributor." 1>&2
 exit 1
 fi
+
 echo "Assigning/updating role. Please wait..."
 az role assignment $action --assignee $userprincipalname --role $role
 echo "Role assigned/updated"

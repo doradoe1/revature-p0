@@ -38,6 +38,7 @@ if [ -n "$(ls -A $directory)" ]; then
 echo "Directory is not empty. Please choose another location or empty the directory." 1>&2
 exit 1
 fi
+
 echo "Requirements verified. Creating git structure."
 
 ##Use this structure just like the sacred text foretold.##

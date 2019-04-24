@@ -11,7 +11,7 @@ exit 1
 fi
 
 ##Variables.##
-##Action value must be start or stop. Directory does not have restrictions.##
+##Action value must be start or stop. Directory needs to exist.##
 
 action=$1
 directory=$2
