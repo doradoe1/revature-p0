@@ -1,13 +1,23 @@
 #!/bin/bash
 
-##State the username of the admin upon running the script.##
+##Automate the process of creating, assigning, deleting a directory user.##
+##Include: azure, must be admin, add role of reader or contributor to subscription,##
+##remove role of reader or contributor to subscription, delete non-admin only,##
+##1 script with 3 functions.##
+
+##Check if azure is installed##
+if [ -z "which az" ]; then
+echo "Azure missing. Install azure. Run brew install azure-cli and try again" 1>&2
+exit 1
+fi
+
 username=$1
 
 ##Step One: Login into Azure.##
 
 az login -u $username
 
-##Step Two: Must have admin credentials to continue.##
+##Step Two: Verify that user has admin credentials to continue.##
 
 echo "Verifying for Administrator Credentials. Please wait..."
 
@@ -19,10 +29,9 @@ exit 1
 fi
 
 echo "User Validated, please state one of the following functions:"
-echo "Input createuser username *no domain needed* to create a new user."
-echo "Input assingrole create or delete username *no domain needed*."
-echo "Input reader or contributor to assing or remove a role to an existing user."
-echo "Input deleteuser username *no domain needed* to delete a non-admin existing user."
+echo "Input createuser (username *no domain needed*) to create a new user."
+echo "Input assingrole (create or delete) (username *no domain needed*) (reader or contributor)."
+echo "Input deleteuser (username *no domain needed*) to delete a non-admin existing user."
 
 ##Function One: Create User##
 ##Function will also check to see if the user we are intending to create already exits##
@@ -51,7 +60,7 @@ exit 0
 
 }
 
-##Function Two: Assing a Role.##
+##Function Two: Assing or remove a role.##
 
 assingrole()
 {
@@ -89,7 +98,7 @@ deleteuser()
 displayname=$1
 userprincipalname=$displayname@doradoe1outlook.onmicrosoft.com
 
-##Administration credentials checkpoint. Will not work procced if userprincipalname##
+##Administration credentials checkpoint. Will not procced if userprincipalname##
 ##belongs to an account administrator.##
 
 admincheck=$(az role assignment list \
