@@ -15,12 +15,6 @@ test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew
 test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
 echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
-##Dummyproffing the installation of brew##
-if [ -z $(which brew) ]; then
-echo "brew did not install. Please try again"
-exit 1
-fi
-
 ##Install gcc. GNU C compiler. Brew will manage it. The GNU Compiler Collection.##
 ##Compiles C into a script##
 ##Translate programing language to machine language.##
@@ -33,3 +27,7 @@ brew install node
 brew install azure-cli
 
 echo 'You have a fully-functional and up-to-date Linux Environment'
+
+echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.profile
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+echo 'brew added to home path"
